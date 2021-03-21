@@ -1,6 +1,4 @@
 #include "Arduino.h"
-#include <Wire.h>
-#include "Adafruit_TCS34725.h"
 #include <AccelStepper.h>
 #include <Servo.h>
 
@@ -8,10 +6,6 @@
 const int entryPin = 14;
 const int waterSensePin = 15;
 const int preMagnetPin = 16;
-
-// Adafruit color sensor library constructor
-Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_700MS, TCS34725_GAIN_1X);
-byte gammatable[256]; 
 
 // Stepper aka fishing rod
 #define FULLSTEP 4

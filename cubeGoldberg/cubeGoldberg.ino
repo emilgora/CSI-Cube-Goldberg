@@ -3,18 +3,19 @@
 #include <Servo.h>
 
 // Inputs
-const int entryPin = 14;
-const int waterSensePin = 15;
-const int preMagnetPin = 16;
+const int entryPin = A4;
+const int waterSensePin = A3;
+const int preMagnetPin = A2;
+const int colorPin = A1;
 
 // Stepper aka fishing rod
 #define FULLSTEP 4
 AccelStepper myStepper(FULLSTEP, 9, 11, 10, 12);
 
 // Outputs
-const int solenoid1Pin = 3;
+const int solenoid1Pin = 5;
 const int solenoid2Pin = 4;
-const int magnetPin = 5;
+const int magnetPin = 3;
 
 // Exit ramp servo
 #define servoPin 6
@@ -27,6 +28,7 @@ void setup() {
   pinMode(entryPin, INPUT_PULLUP);
   pinMode(waterSensePin, INPUT_PULLUP);
   pinMode(preMagnetPin, INPUT_PULLUP);
+  pinMode(colorPin, INPUT_PULLUP);
   pinMode(solenoid1Pin, OUTPUT);
   pinMode(solenoid2Pin, OUTPUT);
   pinMode(magnetPin, OUTPUT);
@@ -42,7 +44,7 @@ void loop() {
   int waterState = digitalRead(waterSensePin);
   int entryState = digitalRead(entryPin);
   int preMagnetState = digitalRead(preMagnetPin);
-  int colorState = digitalRead(5);
+  int colorState = digitalRead(colorPin);
   
   // Step 1
 
@@ -76,20 +78,17 @@ void loop() {
     myStepper.setSpeed(-700); 
   }
 
-  if(colorState > 4100) {
-    myStepper.setSpeed(0); 
-    delay(3000);
-    digitalWrite(magnetPin, 0);
-  }
-
   // Step 4
 
-  if(waterState == LOW) {
+  if(colorState > 4100) {
+    myStepper.setSpeed(0); 
     exitServo.write(0);
-    delay(10000);
+    delay(3000);
+    digitalWrite(magnetPin, 0);
+    delay(15000);
   }
-  else {
+  else{
     exitServo.write(180);
   }
-  
+
 }

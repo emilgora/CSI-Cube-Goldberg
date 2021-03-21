@@ -17,7 +17,10 @@ void loop() {
   Serial.print("Red value: "); Serial.println(r, DEC);  // Outputs red color value to Serial monitor
 
     if(r > 4100) {
-    digitalWrite(5, HIGH);
+    digitalWrite(A1, LOW);
+  }
+  else{
+    digitalWrite(A1, HIGH);
   }
 
 }

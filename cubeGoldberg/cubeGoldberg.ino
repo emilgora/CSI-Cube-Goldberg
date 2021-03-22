@@ -11,6 +11,7 @@ const int colorPin = A1;
 // Stepper aka fishing rod
 #define FULLSTEP 4
 AccelStepper myStepper(FULLSTEP, 9, 11, 10, 12);
+int counter = 0;
 
 // Outputs
 const int solenoid1Pin = 5;
@@ -49,9 +50,14 @@ void loop() {
   // Step 1
 
   if(entryState == LOW) {
-    delay(1000);
+    delay(3000);
     digitalWrite(solenoid1Pin, HIGH);
     delay(5000);
+    digitalWrite(solenoid1Pin, LOW);
+    delay(1000);
+    digitalWrite(solenoid1Pin, HIGH);
+    delay(1000);
+    digitalWrite(solenoid1Pin, LOW);
   }
   else {
      digitalWrite(solenoid1Pin, LOW);
@@ -62,7 +68,16 @@ void loop() {
   if(waterState == LOW) {
     delay(1000);
     digitalWrite(solenoid2Pin, HIGH);
-    delay(2000);
+    delay(1000);
+    digitalWrite(solenoid2Pin, LOW);
+    delay(1000);
+    digitalWrite(solenoid2Pin, HIGH);
+    delay(1000);
+    digitalWrite(solenoid2Pin, LOW);
+    delay(1000);
+    digitalWrite(solenoid2Pin, HIGH);
+    delay(1000);
+    digitalWrite(solenoid2Pin, LOW);
   }
   else {
     digitalWrite(solenoid2Pin, LOW);
@@ -72,23 +87,24 @@ void loop() {
 
   myStepper.runSpeed();
   
-  if(preMagnetState == LOW) {
+  if(preMagnetState == LOW && counter == 0) {
     digitalWrite(magnetPin, 255);
     delay(3000); 
-    myStepper.setSpeed(-700); 
+    myStepper.setSpeed(-500); 
   }
 
   // Step 4
 
-  if(colorState > 4100) {
+  if(colorState == LOW) {
+    counter = 1;
     myStepper.setSpeed(0); 
-    exitServo.write(0);
+    exitServo.write(180);
     delay(3000);
     digitalWrite(magnetPin, 0);
     delay(15000);
   }
   else{
-    exitServo.write(180);
+    exitServo.write(0);
   }
 
 }

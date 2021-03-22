@@ -8,6 +8,8 @@ byte gammatable[256];
 void setup() {
   Serial.begin(9600);
 
+  pinMode(A1, OUTPUT);
+
 }
 
 void loop() {
@@ -16,7 +18,7 @@ void loop() {
   tcs.getRawData(&r, &g, &b, &c);
   Serial.print("Red value: "); Serial.println(r, DEC);  // Outputs red color value to Serial monitor
 
-    if(r > 4100) {
+    if(r > 11000) {
     digitalWrite(A1, LOW);
   }
   else{

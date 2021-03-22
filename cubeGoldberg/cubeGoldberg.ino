@@ -3,9 +3,9 @@
 #include <Servo.h>
 
 // Inputs
-const int entryPin = A4;
+const int entryPin = A4; //photocell
 const int waterSensePin = A3;
-const int preMagnetPin = A2;
+const int preMagnetPin = A2; //photocell
 const int colorPin = A1;
 
 // Stepper aka fishing rod
@@ -26,9 +26,9 @@ void setup() {
   
   Serial.begin(9600);
   
-  pinMode(entryPin, INPUT_PULLUP);
+  pinMode(entryPin, INPUT); //photocell
   pinMode(waterSensePin, INPUT_PULLUP);
-  pinMode(preMagnetPin, INPUT_PULLUP);
+  pinMode(preMagnetPin, INPUT); //photocell
   pinMode(colorPin, INPUT_PULLUP);
   pinMode(solenoid1Pin, OUTPUT);
   pinMode(solenoid2Pin, OUTPUT);
@@ -42,14 +42,14 @@ void setup() {
 
 void loop() {
   
+  int entryState = analogRead(entryPin); //photocell
   int waterState = digitalRead(waterSensePin);
-  int entryState = digitalRead(entryPin);
-  int preMagnetState = digitalRead(preMagnetPin);
+  int preMagnetState = analogRead(preMagnetPin); //photocell
   int colorState = digitalRead(colorPin);
   
   // Step 1
 
-  if(entryState == LOW) {
+  if(entryState > 127) { // photocell tuning here
     delay(3000);
     digitalWrite(solenoid1Pin, HIGH);
     delay(5000);
@@ -87,7 +87,7 @@ void loop() {
 
   myStepper.runSpeed();
   
-  if(preMagnetState == LOW && counter == 0) {
+  if(preMagnetState > 127 && counter == 0) { //photocell tuning here
     digitalWrite(magnetPin, 255);
     delay(3000); 
     myStepper.setSpeed(-500); 

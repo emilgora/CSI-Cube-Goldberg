@@ -26,9 +26,9 @@ void setup() {
   
   Serial.begin(9600);
   
-  pinMode(entryPin, INPUT); //photocell
+  pinMode(entryPin, INPUT_PULLUP); //photocell
   pinMode(waterSensePin, INPUT_PULLUP);
-  pinMode(preMagnetPin, INPUT); //photocell
+  pinMode(preMagnetPin, INPUT_PULLUP); //photocell
   pinMode(colorPin, INPUT_PULLUP);
   pinMode(solenoid1Pin, OUTPUT);
   pinMode(solenoid2Pin, OUTPUT);
@@ -42,14 +42,16 @@ void setup() {
 
 void loop() {
   
-  int entryState = analogRead(entryPin); //photocell
+  int entryState = digitalRead(entryPin); //photocell
   int waterState = digitalRead(waterSensePin);
-  int preMagnetState = analogRead(preMagnetPin); //photocell
+  int preMagnetState = digitalRead(preMagnetPin); //photocell
   int colorState = digitalRead(colorPin);
+  Serial.print("entry:"); Serial.print(entryState); 
+  Serial.print("preMag:"); Serial.println(preMagnetState);
   
   // Step 1
 
-  if(entryState > 127) { // photocell tuning here
+  if(entryState == LOW) { // photocell tuning here
     delay(3000);
     digitalWrite(solenoid1Pin, HIGH);
     delay(5000);
@@ -87,7 +89,7 @@ void loop() {
 
   myStepper.runSpeed();
   
-  if(preMagnetState > 127 && counter == 0) { //photocell tuning here
+  if(preMagnetState == LOW && counter == 0) { //photocell tuning here
     digitalWrite(magnetPin, 255);
     delay(3000); 
     myStepper.setSpeed(-500); 

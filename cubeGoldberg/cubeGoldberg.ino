@@ -52,7 +52,6 @@ void loop() {
   // Step 1
 
   if(entryState == LOW) { // photocell tuning here
-    Serial.println("magnetIsOn");
     delay(3000);
     digitalWrite(solenoid1Pin, HIGH);
     delay(5000);
@@ -89,9 +88,10 @@ void loop() {
   // Step 3
 
   myStepper.runSpeed();
+
+  digitalWrite(magnetPin, HIGH);
   
   if(preMagnetState == LOW && counter == 0) { //photocell tuning here
-    digitalWrite(magnetPin, HIGH);
     delay(3000); 
     myStepper.setSpeed(-500); 
     delay(500);

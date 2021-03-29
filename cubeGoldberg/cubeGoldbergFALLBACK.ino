@@ -1,5 +1,5 @@
 #include "Arduino.h"
-//#include <AccelStepper.h>
+#include <AccelStepper.h>
 #include <Servo.h>
 
 // Inputs
@@ -9,10 +9,9 @@ const int preMagnetPin = A2; //photocell
 const int colorPin = A1;
 
 // Stepper aka fishing rod
-//#define FULLSTEP 4
-//AccelStepper myStepper(FULLSTEP, 9, 11, 10, 12);
+#define FULLSTEP 4
+AccelStepper myStepper(FULLSTEP, 9, 11, 10, 12);
 int counter = 0;
-const int stepperPin = 9;
 
 // Outputs
 const int solenoid1Pin = 5;
@@ -34,11 +33,9 @@ void setup() {
   pinMode(solenoid1Pin, OUTPUT);
   pinMode(solenoid2Pin, OUTPUT);
   pinMode(magnetPin, OUTPUT);
-  pinMode(stepperPin, OUTPUT);
 
-  //myStepper.setMaxSpeed(1000);
-  //myStepper.setSpeed(0);
-  digitalWrite(stepperPin, HIGH);
+  myStepper.setMaxSpeed(1000);
+  myStepper.setSpeed(0);
   exitServo.attach(servoPin, 0, 10000);  
   
 }
@@ -90,27 +87,24 @@ void loop() {
   
   // Step 3
 
-  //myStepper.runSpeed();
+  myStepper.runSpeed();
 
   digitalWrite(magnetPin, HIGH);
   
   if(preMagnetState == LOW && counter == 0) { //photocell tuning here
     delay(3000); 
-    digitalWrite(stepperPin, LOW);
-  //  myStepper.setSpeed(-500); 
-  //  delay(500);
-  //  myStepper.setSpeed(-700);
-  //  delay(500);
-  //  myStepper.setSpeed(-900); 
+    myStepper.setSpeed(-500); 
+    delay(500);
+    myStepper.setSpeed(-700);
+    delay(500);
+    myStepper.setSpeed(-900); 
   }
-  else
 
   // Step 4
 
   if(colorState == LOW) {
     counter = 1;
-    //myStepper.setSpeed(0); 
-    digitalWrite(stepperPin, HIGH);
+    myStepper.setSpeed(0); 
     exitServo.write(180);
     delay(3000);
     digitalWrite(magnetPin, 0);
